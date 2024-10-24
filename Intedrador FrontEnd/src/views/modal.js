@@ -1,6 +1,6 @@
 /* ==== POPUP ==== */
 
-import { productoActivo } from "../../main";
+import { productoActivo, setProductoActivo } from "../../main";
 import { handleDeleteProduct } from "../services/producto";
 
 
@@ -18,6 +18,12 @@ export const openModal= ()=>{
 
 const modal=document.getElementById("modalPopUp");
 modal.style.display="flex";
+    const buttonDelete= document.getElementById("deleteButton")
+    if(productoActivo){
+        buttonDelete.style.display='block';
+    }else{buttonDelete.style.display='none';
+
+    }
 
     if(productoActivo){
         const nombre= document.getElementById("nombre"),
@@ -27,7 +33,7 @@ modal.style.display="flex";
         nombre.value=productoActivo.nombre;
         imagen.value=productoActivo.imagen;
         precio.value=productoActivo.precio;
-        categoria.value=productoActivo.categoria ;
+        categoria.value="Seleccione una categoria" ;
     }
 };
 

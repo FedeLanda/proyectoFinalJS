@@ -1,7 +1,8 @@
 
+import { productoActivo } from "../../main";
 import { handleGetProductLocalStorage, setInLocalStorage } from "../persitence/localStorage";
 import { closeModal } from "../views/modal";
-
+import Swal from 'sweetalert2';
 import { handleGetProductsToStore, handleRenderList } from "../views/store";
 
 /* ===== PRODUCT ==== */
@@ -41,7 +42,11 @@ import { handleGetProductsToStore, handleRenderList } from "../views/store";
             categoria,
         }
 
-
+        Swal.fire({
+            title: "Correcto",
+            text: "Producto guardado correctamente",
+            icon: "success"
+          });
         
     }
         setInLocalStorage(object);
@@ -55,14 +60,34 @@ import { handleGetProductsToStore, handleRenderList } from "../views/store";
 
     export const handleDeleteProduct=()=>{
 
-        const product= handleGetProductLocalStorage();
-        const result= product.filter((el)=> el.id !== productoActivo.id);
-      
+        Swal.fire({
+            title: "Seguro de que quieres eliminar?",
+            text: "Si lo eliminas sera permanente",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, eliminar!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                const product= handleGetProductLocalStorage();
+                const result= product.filter((el)=> el.id !== productoActivo.id);
+              
+        
+                //setear el nuevo array
+            localStorage.setItem('products', JSON.stringify(result));
+        
+                const newProduct= handleGetProductLocalStorage();
+                handleRenderList(newProduct);
+                closeModal();
+            }else{
+                closeModal();
+            }
+              });
+            }
+          
 
-        //setear el nuevo array
-    localStorage.setItem('products', JSON.stringify(result));
 
-        const newProduct= handleGetProductLocalStorage();
-        handleRenderList(newProduct);
-        closeModal();
-    }
+
+
+        
